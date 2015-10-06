@@ -1,4 +1,4 @@
-package com.markjlehman.todolist;
+package com.markjlehman.todolist.ui;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -9,6 +9,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.markjlehman.todolist.R;
+import com.markjlehman.todolist.models.Task;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -19,6 +26,8 @@ public class MainActivity extends ListActivity {
     private Button mTaskButton;
     private EditText mNewTaskText;
     private ArrayAdapter<String> mAdapter;
+    private TextView mEmpty;
+    private ListView mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +36,20 @@ public class MainActivity extends ListActivity {
         mTaskButton = (Button) findViewById(R.id.addTaskButton);
         mNewTaskText = (EditText) findViewById(R.id.addTaskField);
         mTasks = new ArrayList<String>();
+        for (Task task : Task.all() ) {
+            mTasks.add(task.getmDescription());
+        }
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
         setListAdapter(mAdapter);
+        mEmpty = (TextView) findViewById(R.id.empty);
+        mList = (ListView) findViewById(R.id.list);
+//        if (mTasks.size() == 0) {
+//            mList.setVisibility(View.INVISIBLE);
+//            mEmpty.setVisibility(View.VISIBLE);
+//        } else {
+//            mEmpty.setVisibility(View.INVISIBLE);
+//            mList.setVisibility(View.VISIBLE);
+//        }
         mTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,8 +60,11 @@ public class MainActivity extends ListActivity {
     }
 
     private void addTask() {
-        String task = mNewTaskText.getText().toString();
-        mTasks.add(task);
+        String description = mNewTaskText.getText().toString();
+        Task newTask = new Task(description);
+        newTask.save();
+        mTasks.add(description);
+        mNewTaskText.setText("");
         mAdapter.notifyDataSetChanged();
     }
 
