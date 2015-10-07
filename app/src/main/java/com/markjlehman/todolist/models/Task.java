@@ -13,19 +13,29 @@ public class Task extends Model {
     @Column(name = "Description")
     public String mDescription;
 
+    @Column(name = "Category")
+    public Category mCategory;
+
     public Task() {
         super();
     }
 
-    public Task(String mDescription) {
+    public Task(String mDescription, Category mCategory) {
         super();
         this.mDescription = mDescription;
+        this.mCategory = mCategory;
     }
 
+    public Category getmCategory() {
+        return mCategory;
+    }
     public String getmDescription() {
         return mDescription;
     }
 
+    public void setmCategory(Category mCategory) {
+        this.mCategory = mCategory;
+    }
     public void setmDescription(String mDescription) {
         this.mDescription = mDescription;
     }

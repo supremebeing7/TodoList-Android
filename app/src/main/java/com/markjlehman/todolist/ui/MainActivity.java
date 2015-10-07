@@ -2,7 +2,9 @@ package com.markjlehman.todolist.ui;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.markjlehman.todolist.R;
+import com.markjlehman.todolist.models.Category;
 import com.markjlehman.todolist.models.Task;
 
 import org.w3c.dom.Text;
@@ -21,51 +24,62 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ListActivity {
+    public static String TAG = MainActivity.class.getSimpleName();
 
-    private ArrayList<String> mTasks = new ArrayList<String>();
-    private Button mTaskButton;
-    private EditText mNewTaskText;
-    private ArrayAdapter<String> mAdapter;
-    private TextView mEmpty;
-    private ListView mList;
+    private ArrayList<String> mCategories;
+    private Button mCategoryButton;
+    private EditText mNewCategoryText;
+    private ArrayAdapter<String> mCategoryAdapter;
+    private TextView mCategoriesEmpty;
+    private ListView mCategoriesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTaskButton = (Button) findViewById(R.id.addTaskButton);
-        mNewTaskText = (EditText) findViewById(R.id.addTaskField);
-        mTasks = new ArrayList<String>();
-        for (Task task : Task.all() ) {
-            mTasks.add(task.getmDescription());
+
+        mCategoryButton = (Button) findViewById(R.id.addTaskButton);
+        mNewCategoryText = (EditText) findViewById(R.id.addTaskField);
+        mCategories = new ArrayList<String>();
+        for (Category category : Category.all() ) {
+            mCategories.add(category.getmName());
+            Log.d(TAG, category.getId().toString());
         }
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
-        setListAdapter(mAdapter);
-        mEmpty = (TextView) findViewById(R.id.empty);
-        mList = (ListView) findViewById(R.id.list);
+        mCategoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mCategories);
+        setListAdapter(mCategoryAdapter);
+        mCategoriesEmpty = (TextView) findViewById(R.id.empty);
+        mCategoriesList = (ListView) findViewById(R.id.list);
 //        if (mTasks.size() == 0) {
-//            mList.setVisibility(View.INVISIBLE);
-//            mEmpty.setVisibility(View.VISIBLE);
+//            mCategoriesList.setVisibility(View.INVISIBLE);
+//            mCategoriesEmpty.setVisibility(View.VISIBLE);
 //        } else {
-//            mEmpty.setVisibility(View.INVISIBLE);
-//            mList.setVisibility(View.VISIBLE);
+//            mCategoriesEmpty.setVisibility(View.INVISIBLE);
+//            mCategoriesList.setVisibility(View.VISIBLE);
 //        }
-        mTaskButton.setOnClickListener(new View.OnClickListener() {
+        mCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask();
+                addCategory();
             }
         });
-
     }
 
-    private void addTask() {
-        String description = mNewTaskText.getText().toString();
-        Task newTask = new Task(description);
-        newTask.save();
-        mTasks.add(description);
-        mNewTaskText.setText("");
-        mAdapter.notifyDataSetChanged();
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        String thisCategoryName = mCategories.get(position);
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra("categoryName", thisCategoryName);
+        startActivity(intent);
+    }
+
+    private void addCategory() {
+        String name = mNewCategoryText.getText().toString();
+        Category newCategory = new Category(name);
+        newCategory.save();
+        mCategories.add(name);
+        mNewCategoryText.setText("");
+        mCategoryAdapter.notifyDataSetChanged();
     }
 
 
