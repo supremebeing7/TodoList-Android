@@ -75,6 +75,7 @@ public class MainActivity extends ListActivity {
         newCategory.save();
         mCategories.add(name);
         mNewCategoryText.setText("");
+        mCategoriesEmpty.setVisibility(View.INVISIBLE);
         mCategoryAdapter.notifyDataSetChanged();
     }
 

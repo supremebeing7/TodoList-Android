@@ -33,6 +33,7 @@ public class CategoryActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
         String name = getIntent().getStringExtra("categoryName");
         mCategory = Category.find(name);
 
@@ -65,6 +66,7 @@ public class CategoryActivity extends ListActivity {
         newTask.save();
         mTasks.add(description);
         mNewTaskText.setText("");
+        mEmpty.setVisibility(View.INVISIBLE);
         mAdapter.notifyDataSetChanged();
     }
 
