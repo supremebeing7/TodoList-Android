@@ -3,6 +3,7 @@ package com.markjlehman.todolist.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.util.List;
@@ -38,5 +39,9 @@ public class Category extends Model {
 
     public static Category find(String name) {
         return new Select().from(Category.class).where("Name = ?", name).executeSingle();
+    }
+
+    public static void delete_all() {
+        new Delete().from(Category.class).execute();
     }
 }
