@@ -41,7 +41,7 @@ public class Category extends Model {
         return new Select().from(Category.class).where("Name = ?", name).executeSingle();
     }
 
-    public static void delete_all() {
+    public static void deleteAll() {
         new Delete().from(Category.class).execute();
     }
 }

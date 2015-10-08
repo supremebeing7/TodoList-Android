@@ -45,7 +45,7 @@ public class Task extends Model {
         return new Select().from(Task.class).execute();
     }
 
-    public static void delete_all() {
+    public static void deleteAll() {
         new Delete().from(Task.class).execute();
     }
 }
