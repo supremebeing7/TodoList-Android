@@ -47,11 +47,11 @@ public class MainActivity extends ListActivity {
         mCategoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mCategories);
         setListAdapter(mCategoryAdapter);
         mCategoriesEmpty = (TextView) findViewById(R.id.emptyCategories);
-//        if (mCategories.size() == 0) {
-//            mCategoriesEmpty.setVisibility(View.VISIBLE);
-//        } else {
-//            mCategoriesEmpty.setVisibility(View.INVISIBLE);
-//        }
+        if (mCategories.size() == 0) {
+            mCategoriesEmpty.setVisibility(View.VISIBLE);
+        } else {
+            mCategoriesEmpty.setVisibility(View.INVISIBLE);
+        }
         mCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
