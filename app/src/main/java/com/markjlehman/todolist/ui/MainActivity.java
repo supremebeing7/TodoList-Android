@@ -49,8 +49,6 @@ public class MainActivity extends ListActivity {
         mCategoriesEmpty = (TextView) findViewById(R.id.emptyCategories);
         if (mCategories.size() == 0) {
             mCategoriesEmpty.setVisibility(View.VISIBLE);
-        } else {
-            mCategoriesEmpty.setVisibility(View.INVISIBLE);
         }
         mCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
