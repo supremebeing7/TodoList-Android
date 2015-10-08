@@ -1,6 +1,5 @@
 package com.markjlehman.todolist.ui;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +15,8 @@ import android.widget.TextView;
 
 import com.markjlehman.todolist.R;
 import com.markjlehman.todolist.models.Category;
-import com.markjlehman.todolist.models.Task;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-
 
 public class MainActivity extends ListActivity {
     public static String TAG = MainActivity.class.getSimpleName();

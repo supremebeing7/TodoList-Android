@@ -17,6 +17,9 @@ public class Task extends Model {
     @Column(name = "Category")
     public Category mCategory;
 
+    @Column(name = "Finished")
+    public boolean mFinished;
+
     public Task() {
         super();
     }
@@ -25,6 +28,7 @@ public class Task extends Model {
         super();
         this.mDescription = mDescription;
         this.mCategory = mCategory;
+        this.mFinished = false;
     }
 
     public Category getmCategory() {
@@ -33,12 +37,18 @@ public class Task extends Model {
     public String getmDescription() {
         return mDescription;
     }
+    public boolean getmFinished() {
+        return mFinished;
+    }
 
     public void setmCategory(Category mCategory) {
         this.mCategory = mCategory;
     }
     public void setmDescription(String mDescription) {
         this.mDescription = mDescription;
+    }
+    public void setmFinished(boolean mFinished) {
+        this.mFinished = mFinished;
     }
 
     public static List<Task> all() {

@@ -1,11 +1,8 @@
 package com.markjlehman.todolist.ui;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,12 +39,8 @@ public class CategoryActivity extends ListActivity {
         mTaskButton = (Button) findViewById(R.id.addTaskButton);
         mNewTaskText = (EditText) findViewById(R.id.addTaskField);
 
-        mTasks = new ArrayList<String>();
-        for (Task task : mCategory.tasks() ) {
-            mTasks.add(task.getmDescription());
-        }
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
-        setListAdapter(mAdapter);
+        populateTasks();
+
         mEmpty = (TextView) findViewById(R.id.empty);
         if (mTasks.size() == 0) {
             mEmpty.setVisibility(View.VISIBLE);
@@ -60,19 +53,38 @@ public class CategoryActivity extends ListActivity {
         });
     }
 
+    private void populateTasks() {
+        mTasks = new ArrayList<String>();
+        for (Task task : mCategory.tasks() ) {
+            mTasks.add(taskFullDescription(task));
+        }
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
+        setListAdapter(mAdapter);
+    }
+
+    private String taskFullDescription(Task task) {
+        if (task.getmFinished()) {
+            return task.getmDescription() + " - Finished";
+        } else {
+            return task.getmDescription();
+        }
+    }
+
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         String taskDescription = mTasks.get(position);
         Task clickedTask = Task.find(taskDescription);
-        clickedTask.delete();
+        finishTask(clickedTask, v, taskDescription);
+    }
+
+    private void finishTask(Task clickedTask, View v, String taskDescription) {
+        clickedTask.setmFinished(true);
+        clickedTask.save();
         TextView taskText = (TextView) v;
-        taskText.setText(taskDescription + " - Deleted");
-        taskText.setBackgroundColor(Color.parseColor("#ff0000"));
+        taskText.setText(taskDescription + " - Finished");
+        taskText.setBackgroundColor(Color.parseColor("#00ff00"));
         taskText.setTextColor(Color.parseColor("#ffffff"));
-        if (mTasks.size() == 0) {
-            mEmpty.setVisibility(View.VISIBLE);
-        }
     }
 
     private void addTask() {
