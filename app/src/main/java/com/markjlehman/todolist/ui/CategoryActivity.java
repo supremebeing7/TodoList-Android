@@ -82,6 +82,7 @@ public class CategoryActivity extends ListActivity {
         mTasks.add(description);
         mNewTaskText.setText("");
         mEmpty.setVisibility(View.INVISIBLE);
+        mNewTaskText.clearFocus();
         mAdapter.notifyDataSetChanged();
     }
 

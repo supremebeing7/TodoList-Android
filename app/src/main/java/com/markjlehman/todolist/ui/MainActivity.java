@@ -73,6 +73,7 @@ public class MainActivity extends ListActivity {
         newCategory.save();
         mCategories.add(name);
         mNewCategoryText.setText("");
+        mNewCategoryText.clearFocus();
         mCategoriesEmpty.setVisibility(View.INVISIBLE);
         mCategoryAdapter.notifyDataSetChanged();
     }
