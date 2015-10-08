@@ -28,7 +28,6 @@ public class CategoryActivity extends ListActivity {
     private EditText mNewTaskText;
     private ArrayAdapter<String> mAdapter;
     private TextView mEmpty;
-    private ListView mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +40,16 @@ public class CategoryActivity extends ListActivity {
         mNewTaskText = (EditText) findViewById(R.id.addTaskField);
 
         mTasks = new ArrayList<String>();
-        for (Task task : Task.all() ) {
+        for (Task task : mCategory.tasks() ) {
             mTasks.add(task.getmDescription());
         }
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
         setListAdapter(mAdapter);
         mEmpty = (TextView) findViewById(R.id.empty);
-        mList = (ListView) findViewById(R.id.list);
 //        if (mTasks.size() == 0) {
-//            mList.setVisibility(View.INVISIBLE);
 //            mEmpty.setVisibility(View.VISIBLE);
 //        } else {
 //            mEmpty.setVisibility(View.INVISIBLE);
-//            mList.setVisibility(View.VISIBLE);
 //        }
         mTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override

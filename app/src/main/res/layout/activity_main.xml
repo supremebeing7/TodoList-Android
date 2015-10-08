@@ -33,7 +33,7 @@
         android:id="@+id/addTaskButton"
         android:layout_alignTop="@+id/addTaskField"
         android:layout_alignRight="@+id/list"
-        android:layout_alignEnd="@+id/list"
+        android:layout_alignEnd="@+id/listCategories"
         android:layout_toEndOf="@+id/addTaskField"
         android:layout_toRightOf="@+id/addTaskField" />
 
@@ -41,8 +41,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/no_tasks_text"
-        android:id="@+id/empty"
+        android:text="No Categories"
+        android:id="@+id/emptyCategories"
         android:layout_alignParentTop="false"
         android:layout_marginTop="114dp"
         android:visibility="invisible" />
