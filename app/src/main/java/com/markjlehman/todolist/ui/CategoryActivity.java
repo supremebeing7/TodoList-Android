@@ -2,6 +2,7 @@ package com.markjlehman.todolist.ui;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -56,6 +57,19 @@ public class CategoryActivity extends ListActivity {
                 addTask();
             }
         });
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        String taskDescription = mTasks.get(position);
+        Task clickedTask = Task.find(taskDescription);
+        clickedTask.delete();
+        mTasks.remove(taskDescription);
+        mAdapter.notifyDataSetChanged();
+        if (mTasks.size() == 0) {
+            mEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     private void addTask() {

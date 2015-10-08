@@ -48,4 +48,8 @@ public class Task extends Model {
     public static void deleteAll() {
         new Delete().from(Task.class).execute();
     }
+
+    public static Task find(String taskDescription) {
+        return new Select().from(Task.class).where("Description = ?", taskDescription).executeSingle();
+    }
 }
