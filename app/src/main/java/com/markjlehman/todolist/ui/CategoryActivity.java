@@ -3,6 +3,7 @@ package com.markjlehman.todolist.ui;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -65,8 +66,10 @@ public class CategoryActivity extends ListActivity {
         String taskDescription = mTasks.get(position);
         Task clickedTask = Task.find(taskDescription);
         clickedTask.delete();
-        mTasks.remove(taskDescription);
-        mAdapter.notifyDataSetChanged();
+        TextView taskText = (TextView) v;
+        taskText.setText(taskDescription + " - Deleted");
+        taskText.setBackgroundColor(Color.parseColor("#ff0000"));
+        taskText.setTextColor(Color.parseColor("#ffffff"));
         if (mTasks.size() == 0) {
             mEmpty.setVisibility(View.VISIBLE);
         }
