@@ -16,6 +16,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <activity android:name=".ui.CategoryActivity" >
                 <meta-data
                     android:name="android.support.ui.MainActivity"
@@ -33,6 +34,14 @@
         <activity
             android:name=".ui.CategoryActivity"
             android:label="@string/title_activity_category" >
+        </activity>
+        <activity
+            android:name=".ui.FinishedTasksActivity"
+            android:label="@string/title_activity_finished_tasks"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.markjlehman.todolist.ui.MainActivity" />
         </activity>
     </application>
 

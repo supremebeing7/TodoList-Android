@@ -2,7 +2,6 @@ package com.markjlehman.todolist.ui;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,28 +18,22 @@ import com.markjlehman.todolist.models.Task;
 
 import java.util.ArrayList;
 
-public class CategoryActivity extends ListActivity {
-    public static String TAG = CategoryActivity.class.getSimpleName();
+public class FinishedTasksActivity extends ListActivity {
+    public static String TAG = FinishedTasksActivity.class.getSimpleName();
 
     private Category mCategory;
     private ArrayList<String> mTasks;
-    private Button mTaskButton;
-    private EditText mNewTaskText;
     private ArrayAdapter<String> mAdapter;
     private TextView mEmpty;
-    private Button mFinishedTasksButton;
+    private Button mAllTasksButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_finished_tasks);
 
         String name = getIntent().getStringExtra("categoryName");
         mCategory = Category.find(name);
-
-        mTaskButton = (Button) findViewById(R.id.addTaskButton);
-        mNewTaskText = (EditText) findViewById(R.id.addTaskField);
-        mFinishedTasksButton = (Button) findViewById(R.id.finishedTasksButton);
 
         populateTasks();
 
@@ -48,42 +41,29 @@ public class CategoryActivity extends ListActivity {
         if (mTasks.size() == 0) {
             mEmpty.setVisibility(View.VISIBLE);
         }
-        mTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTask();
-            }
-        });
 
-        mFinishedTasksButton.setOnClickListener(new View.OnClickListener() {
+        mAllTasksButton = (Button) findViewById(R.id.allTasksButton);
+        mAllTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewFinishedTasks();
+                viewAllTasks();
             }
         });
     }
 
-    private void viewFinishedTasks() {
-        Intent intent = new Intent(this, FinishedTasksActivity.class);
+    private void viewAllTasks() {
+        Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("categoryName", mCategory.getmName());
         startActivity(intent);
     }
 
     private void populateTasks() {
         mTasks = new ArrayList<String>();
-        for (Task task : mCategory.tasks() ) {
-            mTasks.add(taskFullDescription(task));
+        for (Task task : mCategory.finishedTasks() ) {
+            mTasks.add(task.getmDescription());
         }
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mTasks);
         setListAdapter(mAdapter);
-    }
-
-    private String taskFullDescription(Task task) {
-        if (task.getmFinished()) {
-            return task.getmDescription() + " - Finished";
-        } else {
-            return task.getmDescription();
-        }
     }
 
     @Override
@@ -91,33 +71,20 @@ public class CategoryActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
         String taskDescription = mTasks.get(position);
         Task clickedTask = Task.find(taskDescription);
-        finishTask(clickedTask, v, taskDescription);
+        unfinishTask(clickedTask, taskDescription);
     }
 
-    private void finishTask(Task clickedTask, View v, String taskDescription) {
-        clickedTask.setmFinished(true);
+    private void unfinishTask(Task clickedTask, String taskDescription) {
+        clickedTask.setmFinished(false);
         clickedTask.save();
-        TextView taskText = (TextView) v;
-        taskText.setText(taskDescription + " - Finished");
-        taskText.setBackgroundColor(Color.parseColor("#00ff00"));
-        taskText.setTextColor(Color.parseColor("#ffffff"));
-    }
-
-    private void addTask() {
-        String description = mNewTaskText.getText().toString();
-        Task newTask = new Task(description, mCategory);
-        newTask.save();
-        mTasks.add(description);
-        mNewTaskText.setText("");
-        mEmpty.setVisibility(View.INVISIBLE);
-        mNewTaskText.clearFocus();
+        mTasks.remove(taskDescription);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.category, menu);
+        getMenuInflater().inflate(R.menu.finished_tasks, menu);
         return true;
     }
 

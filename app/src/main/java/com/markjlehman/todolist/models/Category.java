@@ -44,4 +44,8 @@ public class Category extends Model {
     public static void deleteAll() {
         new Delete().from(Category.class).execute();
     }
+
+    public List<Task> finishedTasks() {
+        return new Select().from(Task.class).where("Category = ? AND Finished = ?", this.getId(), true).execute();
+    }
 }
